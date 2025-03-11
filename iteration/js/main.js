@@ -47,3 +47,21 @@ export function while_loop_ii(n) {
 const x = 30
 const sum2 = while_loop_ii(x)
 console.log(`1到${x}的和为：${sum2}`)
+
+// 嵌套循环
+
+export function nested_for_loop(n) {
+    let res = ''
+
+    for (let i = 1; i <= n; i++) {
+        for (let j = 1; j <= n; j++) {
+            res += `(${i}, ${j}),`
+        }
+    }
+
+    return res
+}
+
+const y = 5
+const sumStr = nested_for_loop(y)
+console.log(`1到${y}的和为：${sumStr}`)

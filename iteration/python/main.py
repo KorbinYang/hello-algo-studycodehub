@@ -44,3 +44,20 @@ def while_loop_ii(n: int) -> int:
 x = 30
 sum2 = while_loop_ii(x)
 print(f"1到{x}的和为：{sum2}")
+
+
+# 嵌套循环
+def nested_for_loop(n: int) -> str:
+    # 双层for循环
+    res = ""
+
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            res += f"({i}, {j}),"
+
+    return res
+
+
+y = 5
+sumStr = nested_for_loop(y)
+print(f"1到{y}的拼接为：{sumStr}")
