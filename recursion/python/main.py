@@ -44,3 +44,25 @@ def fib(n: int) -> int:
 fibN = 5
 fibNum = fib(fibN)
 print(f"斐波那契数列第{fibN}个数为:{fibNum}")
+
+# 使用显示的栈模拟递归调用栈的行为(1到n求和)
+
+
+def for_loop_recur(n: int) -> int:
+    # 使用一个显示的栈模拟系统调用栈
+    stack = []
+    res = 0
+    # 递：递归调用
+    for i in range(n, 0, -1):
+        stack.append(i)
+    # 归：返回结果
+    while stack:
+        # 通过出栈操作模拟归
+        res += stack.pop()
+    # res = 1+2+3+...+n
+    return res
+
+
+b = 5
+sum5 = for_loop_recur(b)
+print(f"迭代模拟递归调用1到{b}的和为：{sum5}")

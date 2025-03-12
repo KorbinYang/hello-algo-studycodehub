@@ -46,3 +46,25 @@ export function fib(n: number): number {
 const fibN = 5
 const fibNum = fib(fibN)
 console.log(`斐波那契数列第${fibN}个数为:${fibNum}`)
+
+//  使用显示的栈模拟递归调用栈的行为(1到n求和)
+export function for_loop_recur(n: number): number {
+    let res = 0
+    // 使用一个显示的栈模拟系统调用栈
+    const stack: number[] = []
+    // 递：递归调用
+    for (let i = 1; i <= n; i++) {
+        stack.push(i)
+    }
+    // 归：返回结果
+    while (stack.length > 0) {
+        // 通过出栈操作模拟归
+        res += Number(stack.pop())
+    }
+    // res = 1+2+3+...+n
+    return res
+}
+
+const b = 5
+const sum5 = for_loop_recur(b)
+console.log(`迭代模拟递归调用1到${b}的和为：${sum5}`)
