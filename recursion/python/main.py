@@ -26,3 +26,21 @@ def tail_recur(n, res):
 a = 5
 sum4 = tail_recur(a, 0)
 print(f"尾递归调用1到{a}的和为：{sum4}")
+
+
+# 递归树
+# 求斐波那契数列的第n个数字
+def fib(n: int) -> int:
+    res = 0
+    # 终止条件
+    if n == 1 or n == 2:
+        return n - 1
+    # 递归调用
+    res = fib(n - 1) + fib(n - 2)
+    # 返回结果
+    return res
+
+
+fibN = 5
+fibNum = fib(fibN)
+print(f"斐波那契数列第{fibN}个数为:{fibNum}")
