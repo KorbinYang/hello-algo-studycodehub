@@ -77,3 +77,25 @@ const index = 3
 const testNode = testN0
 const indexNode = access(testNode, index)
 console.log(`索引为${index}的节点值为:${indexNode.val}`)
+
+// 查找结点
+/**
+ * 在链表中查找值为 target 的首个节点
+ */
+export function find(head, target) {
+    let index = 0
+    while (head) {
+        if (head.val === target) {
+            return index
+        }
+        head = head.next
+        index += 1
+    }
+
+    return -1
+}
+
+const target = 5
+const testNode1 = testN0
+const findIndex = find(testNode1, target)
+console.log(`查找的索引为${findIndex}`)

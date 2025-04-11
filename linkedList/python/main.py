@@ -80,3 +80,21 @@ index = 3
 testN00 = testN0
 indexNode = access(testN00, index)
 print(f"索引为{index}的节点值为:", indexNode.val)
+
+
+# 查找结点
+def find(head: ListNode, target: int) -> int:
+    """在链表中查找值为 target 的首个节点"""
+    index = 0
+    while head:
+        if head.val == target:
+            return index
+        head = head.next
+        index += 1
+    return -1
+
+
+target = 5
+testNode = testN0
+findIndex = find(testNode, target)
+print(f"查找的节点索引为{findIndex}")
