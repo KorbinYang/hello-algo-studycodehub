@@ -60,3 +60,20 @@ while (po) {
     console.log('删除后遍历:', po.val)
     po = po.next
 }
+
+// 访问链表节点，时间复杂度O(n)
+export function access(head, index) {
+    for (let i = 0; i < index; i++) {
+        if (!head) {
+            return null
+        }
+        head = head.next
+    }
+
+    return head
+}
+
+const index = 3
+const testNode = testN0
+const indexNode = access(testNode, index)
+console.log(`索引为${index}的节点值为:${indexNode.val}`)

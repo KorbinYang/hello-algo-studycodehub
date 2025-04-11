@@ -64,3 +64,19 @@ po = testN0
 while po:
     print("删除节点后遍历:", po.val)
     po = po.next
+
+
+# 访问链表节点
+def access(head: ListNode, index: int) -> ListNode | None:
+    """访问链表中索引为 index 的节点"""
+    for _ in range(index):
+        if not head:
+            return None
+        head = head.next
+    return head
+
+
+index = 3
+testN00 = testN0
+indexNode = access(testN00, index)
+print(f"索引为{index}的节点值为:", indexNode.val)
