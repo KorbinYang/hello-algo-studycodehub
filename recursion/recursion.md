@@ -1,4 +1,4 @@
-# [递归(recursion):](./recursion.md)
+# 递归(recursion):
 
 一种函数策略，通过函数调用自身来解决问题。
 
@@ -13,20 +13,3 @@
 2. **递归调用：** 对应“递”，函数调用自身，通常输入更小或更简化的参数。
 3. **返回结果：** 对应“归”，将当前递归层级的结果返回至上一层。
 
-# 附录：
-
-## 一句话拓展知识点：
-
-### [python:](./python/main.py)
-
-### [ts](./ts/main.ts)
-
--   TypeScript 的静态类型检查并不依赖**运行时逻辑**。
-    > 如下代码 res = stack.pop()代码会被 ts 静态类型检查检测并报错。
-    ```ts
-    let res = 0
-    const stack: number[] = []
-    while (stack.length > 0) {
-        res += stack.pop()
-    }
-    ```
