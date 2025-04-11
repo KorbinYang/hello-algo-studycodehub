@@ -45,3 +45,19 @@ while (p) {
     console.log('遍历testN0:', p.val)
     p = p.next
 }
+
+// 删除链表节点
+export function remove(n0: ListNode) {
+    let p: ListNode | null = n0.next
+    let n1 = p?.next
+    if (n1) {
+        n0.next = n1
+    }
+}
+
+remove(testN0)
+let po: ListNode | null = testN0
+while (po) {
+    console.log('删除后遍历的值:', po.val)
+    po = po.next
+}

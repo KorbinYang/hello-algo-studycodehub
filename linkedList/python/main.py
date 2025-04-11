@@ -44,3 +44,23 @@ point = testN0
 while point:
     print("遍历testN0:", point.val)
     point = point.next
+
+
+# 删除链表节点
+def remove(n0: ListNode):
+    """删除链表的节点 n0 之后的首个节点"""
+    if not n0.next:
+        return
+    # n0 -> P -> n1
+    P = n0.next
+    n1 = P.next
+    n0.next = n1
+
+
+testN0 = n0
+remove(testN0)
+
+po = testN0
+while po:
+    print("删除节点后遍历:", po.val)
+    po = po.next

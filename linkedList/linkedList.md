@@ -15,3 +15,4 @@
     -   功能：
         初始化 self.val 为传入的 val 参数值。
         初始化 self.next 为 None，表示当前节点的下一个节点默认为空。
+-   python 中没有 do...while...循环，只有 while...循环
