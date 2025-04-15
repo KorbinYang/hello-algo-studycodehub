@@ -99,3 +99,15 @@ const target = 5
 const testNode1 = testN0
 const findIndex = find(testNode1, target)
 console.log(`查找的索引为${findIndex}`)
+
+// 双向链表节点类
+class DoubleListNode {
+    constructor(val) {
+        this.val = val
+        this.next = null
+        this.prev = null
+    }
+}
+
+const dbListNode = new DoubleListNode(100)
+console.log(`双向链表:`, dbListNode.val, dbListNode.next, dbListNode.prev)

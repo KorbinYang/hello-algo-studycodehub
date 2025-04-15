@@ -98,3 +98,16 @@ target = 5
 testNode = testN0
 findIndex = find(testNode, target)
 print(f"查找的节点索引为{findIndex}")
+
+
+class DoubleListNode:
+    """双向链表节点类"""
+
+    def __init__(self, val: int):
+        self.val: int = val  # 节点值
+        self.next: DoubleListNode | None = None  # 指向后续节点的引用
+        self.prev: DoubleListNode | None = None  # 指向前驱节点的引用
+
+
+dbListNode = DoubleListNode(100)
+print(f"双向链表:{dbListNode.val, dbListNode.next, dbListNode.prev}")
