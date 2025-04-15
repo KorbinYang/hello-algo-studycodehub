@@ -113,3 +113,92 @@ class DoubleListNode {
 
 const dbListNode = new DoubleListNode(100)
 console.log(`双向链表节点:`, dbListNode.val, dbListNode.next, dbListNode.prev)
+
+/**
+ * 在 Typescript 中，数组（Array）是一种用于存储有序数据集合的对象，可以动态调整大小，并且可以包含任意类型的元素。
+ * TS的数组（Array） 几乎涵盖了 python 中列表的所有功能，并且更加灵活。
+ */
+/**
+ * 列表常用操作
+ */
+/**
+ * 初始化列表(数组)
+ */
+// 无初始值
+let nums1: number[] = []
+// 有初始值
+let nums2: number[] = [1, 3, 2, 5, 4]
+
+/**
+ * 访问元素
+ */
+const num = nums2[1]
+/**
+ * 更新元素
+ */
+nums2[1] = 0
+console.log(`列表操作:`, num, nums2)
+
+/**
+ * 插入和删除元素
+ */
+// 清空列表(数组)
+nums2 = [1, 1, 1, 1, 1]
+nums2 = []
+console.log('clear()', nums2)
+nums2 = [2, 2, 2, 2, 2]
+nums2.length = 0
+console.log('clear()', nums2)
+nums2 = [3, 3, 3, 3, 3]
+nums2.splice(0, nums2.length)
+console.log('clear()', nums2)
+nums2 = [5, 5, 5, 5, 5]
+while (nums2.length) nums2.pop()
+console.log('clear()', nums2)
+nums2 = [6, 6, 6, 6, 6]
+while (nums2.length) nums2.shift()
+
+// 在尾部添加元素
+nums2.push(1)
+nums2.push(3)
+nums2.push(2)
+nums2.push(5)
+nums2.push(4)
+console.log(`在尾部添加元素:`, nums2)
+
+// 在中间插入元素
+nums2.splice(3, 0, 6)
+console.log(`在索引3处插入数字6:`, nums2)
+
+// 删除元素
+nums2.splice(3, 1)
+console.log(`删除索引3处的元素:`, nums2)
+
+/**
+ * 遍历列表
+ */
+// 通过索引遍历列表
+let count = 0
+for (let i = 0; i < nums2.length; i++) {
+    count += nums2[i]
+}
+console.log(`通过索引遍历列表:`, count)
+
+let count1 = 0
+// 直接遍历列表
+nums2.forEach((num) => (count1 += num))
+console.log(`直接遍历列表:`, count1)
+
+/**
+ * 拼接列表
+ */
+// 拼接两个列表
+const nums = [6, 7, 8, 10, 9]
+const nums3 = nums2.concat(nums)
+console.log(`拼接两个列表:`, typeof nums3, nums3)
+
+/**
+ * 排序列表
+ */
+nums3.sort((a, b) => a - b)
+console.log(`排序列表:`, nums3)

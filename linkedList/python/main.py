@@ -111,3 +111,64 @@ class DoubleListNode:
 
 dbListNode = DoubleListNode(100)
 print(f"双向链表:{dbListNode.val, dbListNode.next, dbListNode.prev}")
+
+# 在python中, Python 内置的 list 是最常用的动态数组类型，可以存储任意类型的元素。
+# 列表常用操作
+# 初始化列表
+# 无初始值
+nums1: list[int] = []
+# 有初始值
+nums2: list[int] = [1, 3, 2, 5, 4]
+
+# 访问元素
+num: int = nums2[1]
+# 更新元素
+nums2[1] = 0
+print(f"列表操作:", num, nums2)
+
+
+# 插入和删除元素
+# 清空列表
+nums2.clear()
+print("clear():", nums2)
+
+# 在尾部添加元素
+nums2.append(1)
+nums2.append(3)
+nums2.append(2)
+nums2.append(5)
+nums2.append(4)
+print(f"在尾部添加元素:", nums2)
+
+# 在中间插入元素
+nums2.insert(3, 6)  # 在索引3处插入数字6
+print(f"在索引3处插入数字6:", nums2)
+
+# 删除元素
+nums2.pop(3)
+print("删除索引3处的元素:", nums2)
+
+
+# 遍历列表
+# 通过索引遍历列表
+count = 0
+for i in range(len(nums2)):
+    count += nums2[i]
+
+print("通过索引遍历列表:", count)
+
+# 直接遍历列表
+count = 0
+for num in nums2:
+    count += num
+print("直接遍历列表:", count)
+
+# 拼接列表
+# 拼接两个列表
+nums1: list[int] = [6, 7, 8, 10, 9]
+nums2 += nums1
+print("拼接两个列表:", nums2)
+
+# 排序列表
+nums2.sort()
+print("排序列表:", nums2)
