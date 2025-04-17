@@ -200,3 +200,155 @@ console.log(`拼接两个列表:`, typeof nums3, nums3)
  */
 nums3.sort((x, y) => x - y)
 console.log(`排序列表:`, nums3)
+
+/**
+ * 列表实现
+ */
+class MyList {
+    // 构造方法
+    constructor() {
+        this._capacity = 10 // 列表容量
+        this._arr = new Array(this._capacity).fill(0) // 数组（存储列表元素）
+        this._size = 0 // 列表长度（当前元素数量）
+        this._extend_ratio = 2 // 每次列表扩容的倍数
+    }
+
+    // 获取列表长度
+    size() {
+        return this._size
+    }
+
+    //获取列表容量
+    capacity() {
+        return this._capacity
+    }
+
+    // 访问元素
+    get(index) {
+        if (index < 0 || index >= this._size) {
+            throw new Error('索引越界')
+        }
+        return this._arr[index]
+    }
+
+    // 在尾部添加元素
+    add(num) {
+        if (this._size === this._capacity) {
+            this.extendCapacity()
+        }
+        this._arr[this._size] = num
+        this._size += 1
+    }
+
+    // 更新元素
+    set(num, index) {
+        if (index < 0 || index >= this._size) {
+            throw new Error('索引越界')
+        }
+        this._arr[index] = num
+    }
+
+    // 删除元素
+    remove(index) {
+        if (index < 0 || index >= this._size) {
+            throw new Error('索引越界')
+        }
+        const num = this._arr[index]
+        // 把 index 之后的元素向前移动一位
+        for (let i = index; i < this._size - 1; i++) {
+            this._arr[index] = this._arr[index + 1]
+        }
+
+        this._size -= 1
+
+        return num
+    }
+
+    insert(num, index) {
+        if (index < 0 || index >= this._size) {
+            throw new Error('索引越界')
+        }
+        // 元素数量超出容量时，触发扩容机制
+        if (this.size() === this.capacity()) {
+            this.extendCapacity()
+        }
+        // 把 index 以及之后的元素向后移动一位
+        for (let i = this._size - 1; i >= index; i--) {
+            this._arr[i + 1] = this._arr[i]
+        }
+        this._arr[index] = num
+
+        this._size += 1
+    }
+    // 列表扩容
+    extendCapacity() {
+        this._arr = this._arr.concat(
+            new Array(this._capacity * (this._extend_ratio - 1))
+        )
+
+        this._capacity = this._arr.length
+    }
+
+    // 返回有效长度的列表
+    to_array() {
+        return this._arr.slice(0, this._size)
+    }
+}
+
+// 增
+const myList = new MyList()
+myList.add(1)
+myList.add(3)
+myList.add(2)
+myList.add(5)
+myList.add(4)
+myList.add(0)
+myList.add(6)
+console.log(`myList增:`, myList.to_array())
+// 增 触发扩容
+myList.add(99)
+myList.add(99)
+myList.add(99)
+myList.add(99)
+myList.add(99)
+myList.add(99)
+myList.add(99)
+console.log(
+    `myList增-扩容:`,
+    myList.to_array(),
+    myList.capacity(),
+    `可访问私有属性_capacity:${myList._capacity}`
+)
+
+// 删
+// myList.remove(100) // 索引越界
+const removeItem = myList.remove(6)
+console.log(`myList删:`, myList.to_array(), myList.size(), removeItem)
+
+// 查
+// const getItem = myList.get(100) // 索引越界
+const getItem = myList.get(3)
+console.log(`myList查:`, myList.to_array(), getItem)
+
+// 改
+// myList.set(100, 100) // 索引越界异常
+myList.set(55, 5)
+console.log(`myList改:`, myList.to_array())
+
+// 中间插入
+// myList.insert(100, 100) // 索引越界异常
+myList.insert(100, 3)
+console.log(`myList中间插入:`, myList.to_array())
+
+// 中间插入-触发扩容
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+console.log(`myList中间插入-触发扩容:`, myList.to_array(), myList.capacity())

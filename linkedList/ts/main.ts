@@ -202,3 +202,154 @@ console.log(`拼接两个列表:`, typeof nums3, nums3)
  */
 nums3.sort((a, b) => a - b)
 console.log(`排序列表:`, nums3)
+
+/**
+ * 列表实现
+ */
+class MyList {
+    private _capacity: number = 10 // 列表初始容量
+    private _extend_retio: number = 2 // 扩容倍率
+    private _size: number = 0 // 列表长度
+    private _arr: number[] = new Array(this._capacity).fill(0) //数组（存储列表元素）
+
+    constructor() {
+        console.log(`MyList初始_arr:`, this._arr)
+    }
+
+    public size(): number {
+        return this._size
+    }
+
+    capacity(): number {
+        return this._capacity
+    }
+
+    get(index: number): number {
+        if (index < 0 || index >= this._size) {
+            throw new Error('索引越界')
+        }
+        return this._arr[index]
+    }
+
+    set(num: number, index: number) {
+        if (index < 0 || index >= this._size) {
+            throw new Error('索引越界')
+        }
+
+        this._arr[index] = num
+    }
+
+    add(num: number) {
+        // 长度超出扩容
+        if (this._size === this._capacity) {
+            this.extendCapacity()
+        }
+        this._arr[this._size] = num
+
+        this._size += 1
+    }
+
+    remove(index: number): number {
+        if (index < 0 || index >= this._size) {
+            throw new Error('索引越界')
+        }
+        const num = this._arr[index]
+        // 把 index 之后的元素向前移动一位
+        for (let i = index; i < this._size - 1; i++) {
+            this._arr[index] = this._arr[index + 1]
+        }
+
+        return num
+    }
+
+    insert(num: number, index: number) {
+        // 长度超出扩容
+        if (this._size === this._capacity) {
+            this.extendCapacity()
+        }
+        // 将 index 处及之后的元素值向后移动一位
+        for (let i = this._size - 1; i >= index; i--) {
+            this._arr[i + 1] = this._arr[i]
+        }
+
+        this._arr[index] = num
+
+        this._size += 1
+    }
+    // 返回有效长度的列表
+    to_array() {
+        return this._arr.slice(0, this._size)
+    }
+
+    protected extendCapacity() {
+        this._arr = this._arr.concat(
+            new Array(this._capacity * (this._extend_retio - 1)).fill(0)
+        )
+
+        this._capacity = this._arr.length
+    }
+}
+
+const myList = new MyList()
+// 获取列表长度
+console.log(`myList列表长度:`, myList.size())
+// console.log(`myList列表长度:`, myList._size) // 不能获取私有属性
+
+// 获取列表容量
+console.log(`myList列表容量:`, myList.capacity())
+
+// get
+// const getItem = myList.get(1000) // 索引越界异常
+// const getItem = myList.get(0) // 初始状态无元素，不能访问
+// console.log(`myList get`, getItem)
+
+// set
+// myList.set(100, 0) // 初始状态无元素，不能修改
+
+// 增
+myList.add(1)
+myList.add(3)
+myList.add(2)
+myList.add(5)
+myList.add(4)
+myList.add(0)
+myList.add(6)
+console.log('myList增:', myList.to_array())
+// 增 触发扩容
+myList.add(99)
+myList.add(99)
+myList.add(99)
+myList.add(99)
+myList.add(99)
+myList.add(99)
+myList.add(99)
+console.log('myList增-触发扩容:', myList.to_array(), myList.capacity())
+// console.log('不可访问私有属性_capacity:', myList._capacity)
+
+// 删
+const removeItem = myList.remove(6)
+console.log('myList删:', myList.to_array())
+
+// 查
+const num3 = myList.get(3)
+console.log('myList查:', num3, myList.to_array())
+
+// 改
+myList.set(55, 5)
+console.log('myList改:', myList.to_array())
+
+// 中间插入
+myList.insert(100, 3)
+console.log('myList中间插入:', myList.to_array())
+// 中间插入-触发扩容
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+myList.insert(1000, 3)
+console.log('myList中间插入-触发扩容:', myList.to_array(), myList.capacity())
