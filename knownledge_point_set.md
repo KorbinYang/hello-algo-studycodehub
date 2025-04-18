@@ -18,6 +18,8 @@
 
 ### Python
 
+-   在 Python 中，**list[-1]** 表示访问列表的**最后一个元素**。
+
 -   在 Python 中，**冒号:**在这种 self.\_arr[: self._size] 上下文中表示 **切片操作（slicing）**。具体到 self.\_arr[: self._size]，它的含义是从列表 self.\_arr 中提取从索引 0 开始到索引 \_size（不包括 \_size）的子列表。
 
 -   **raise**是 Python 中用于**手动抛出异常**的关键字。
