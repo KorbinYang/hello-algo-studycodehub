@@ -1,7 +1,7 @@
 /**
  * 链表节点类
  */
-class ListNode {
+export class ListNode {
     public next: ListNode | null
     public val: number
     constructor(val: number) {
