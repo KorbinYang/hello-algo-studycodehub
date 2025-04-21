@@ -110,3 +110,58 @@ print("myStack栈顶元素访问:", myStack.to_list(), peek)
 # 出栈
 num = myStack.pop()
 print("myStack出栈:", myStack.to_list(), num)
+
+
+# 基于数组实现的栈
+class ArrayStack:
+    """基于数组实现的栈"""
+
+    def __init__(self):
+        """构造方法"""
+        self._stack: list[int] = []
+        self._size: int = 0
+
+    def size(self) -> int:
+        """获取栈的长度"""
+        return len(self._stack)
+
+    def is_empty(self) -> bool:
+        """判断栈是否为空"""
+        return self.size() == 0
+
+    def push(self, item: int):
+        self._stack.append(item)
+
+    def pop(self) -> int:
+        if self.is_empty():
+            raise IndexError("栈为空")
+        return self._stack.pop()
+
+    def peek(self) -> int:
+        if self.is_empty():
+            raise IndexError("栈为空")
+        return self._stack[-1]
+
+    def to_list(self) -> list[int]:
+        return self._stack
+
+
+# 实例化 栈
+myArrayStack = ArrayStack()
+print("myArrayStack实例化:", myArrayStack.to_list())
+
+# 入栈
+myArrayStack.push(1)
+myArrayStack.push(3)
+myArrayStack.push(2)
+myArrayStack.push(5)
+myArrayStack.push(4)
+print("myArrayStack入栈:", myArrayStack.to_list())
+
+# 栈顶元素访问
+peek = myArrayStack.peek()
+print("myArrayStack栈顶元素访问:", myArrayStack.to_list(), peek)
+
+# 出栈
+num = myArrayStack.pop()
+print("myArrayStack出栈:", myArrayStack.to_list(), num)

@@ -101,3 +101,72 @@ console.log('myStack栈顶元素访问:', myStack.to_list(), myPeek)
 // 出栈
 const num = myStack.pop()
 console.log('myStack出栈:', myStack.to_list(), num)
+
+/**
+ * 基于数组实现的栈
+ */
+class ArrayStack {
+    private _stack: number[] = []
+
+    constructor() {}
+
+    public size(): number {
+        return this._stack.length
+    }
+
+    is_empty(): boolean {
+        return this.size() === 0
+    }
+
+    push(item: number) {
+        if (this.is_empty()) {
+            throw new Error('栈为空')
+        }
+
+        this._stack.push(item)
+    }
+
+    pop(): number {
+        if (this.is_empty()) {
+            throw new Error('栈为空')
+        }
+
+        const num = this._stack.pop()
+        if (num === undefined) {
+            throw new Error('栈操作错误')
+        }
+        return num
+    }
+
+    peek(): number {
+        if (this.is_empty()) {
+            throw new Error('栈为空')
+        }
+
+        return this._stack[this.size() - 1]
+    }
+
+    to_list(): number[] {
+        return this._stack
+    }
+}
+
+const myArrayStack = new LinkedListStack()
+console.log('myArrayStack size:', myArrayStack.size())
+console.log('myArrayStack is_empty:', myArrayStack.is_empty())
+
+// 入栈
+myArrayStack.push(1)
+myArrayStack.push(3)
+myArrayStack.push(2)
+myArrayStack.push(5)
+myArrayStack.push(4)
+console.log('myArrayStack入栈:', myArrayStack.to_list())
+
+// 栈顶元素访问
+const myArrayPeek = myArrayStack.peek()
+console.log('myArrayStack栈顶元素访问:', myArrayStack.to_list(), myArrayPeek)
+
+// 出栈
+const num1 = myArrayStack.pop()
+console.log('myArrayStack出栈:', myArrayStack.to_list(), num1)
