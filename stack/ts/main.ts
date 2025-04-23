@@ -252,3 +252,83 @@ console.log(
     myLinkedListQueue.to_list(),
     peekNum
 )
+
+// 基于环形数组实现的队列
+class ArrayQueue {
+    private _nums: number[]
+    private _size: number = 0
+    private _front: number = 0
+
+    constructor(size: number) {
+        this._nums = new Array(size).fill(0)
+    }
+
+    public capacity(): number {
+        return this._nums.length
+    }
+
+    size(): number {
+        return this._size
+    }
+
+    is_empty(): boolean {
+        return this.size() === 0
+    }
+
+    push(num: number) {
+        if (this.size() === this.capacity()) {
+            throw new Error('队列已满')
+        }
+        const rear = (this._front + this._size) % this.capacity()
+        this._nums[rear] = num
+        this._size += 1
+    }
+
+    peek(): number {
+        if (this.is_empty()) {
+            throw new Error('队列为空')
+        }
+
+        return this._nums[this._front]
+    }
+
+    pop(): number {
+        if (this.is_empty()) {
+            throw new Error('队列为空')
+        }
+        const num = this.peek()
+        this._front = (this._front + 1) % this.capacity()
+        this._size -= 1
+
+        return num
+    }
+
+    to_list(): number[] {
+        const res = new Array(this.size()).fill(0)
+        let j = this._front
+        for (let i = 0; i < this.size(); i++) {
+            res[i] = this._nums[j % this.capacity()]
+            j++
+        }
+        return res
+    }
+}
+
+// 队列初始化
+const myArrayQueue = new ArrayQueue(5)
+console.log('myArrayQueue 容量:', myArrayQueue.capacity())
+// 长度
+console.log('myArrayQueue 长度:', myArrayQueue.size())
+// 判断队列是否为空
+console.log('myArrayQueue 判断队列是否为空:', myArrayQueue.is_empty())
+// 入队
+myArrayQueue.push(1)
+myArrayQueue.push(3)
+myArrayQueue.push(2)
+myArrayQueue.push(5)
+myArrayQueue.push(4)
+console.log('myArrayQueue 入队:', myArrayQueue.to_list())
+// myArrayQueue.push(100)  # 队列已满
+// 出队
+const item = myArrayQueue.pop()
+console.log('myArrayQueue 出队:', myArrayQueue.to_list(), item)
