@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from collections import deque
 
 # 获取当前文件的父目录的父目录的父目录（项目根目录）
 project_root = Path(__file__).parent.parent.parent
@@ -193,3 +194,35 @@ print("myArrayQueue 入队:", myArrayQueue.to_list())
 # 出队
 item = myArrayQueue.pop()
 print("myArrayQueue 出队:", myArrayQueue.to_list(), item)
+
+
+# python 内置双向队列类，可直接使用
+# 初始化双向队列
+myDeque: deque[int] = deque()
+print("myDeque 初始化双向队列:", myDeque)
+
+# 元素入队
+myDeque.append(2)  # 添加至队尾
+myDeque.append(5)
+myDeque.append(4)
+myDeque.appendleft(3)  # 添加至队首
+myDeque.appendleft(1)
+print("myDeque 元素入队:", myDeque)
+
+# 访问元素
+front: int = myDeque[0]  # 队首元素
+rear: int = myDeque[-1]  # 队尾元素
+print("myDeque 访问元素:", myDeque, front, rear)
+
+# 元素出队
+pop_front: int = myDeque.popleft()  # 队首元素出队
+pop_rear: int = myDeque.pop()  # 队尾元素出队
+print("myDeque 元素出队:", myDeque, pop_front, pop_rear)
+
+# 获取双向队列的长度
+size: int = len(myDeque)
+print("myDeque 获取双向队列的长度:", myDeque, size)
+
+# 判断双向队列是否为空
+is_empty: bool = len(myDeque) == 0
+print("myDeque 获取双向队列的长度:", myDeque, is_empty)
