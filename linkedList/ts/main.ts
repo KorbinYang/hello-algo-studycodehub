@@ -99,7 +99,7 @@ const findIndex = find(testNode1, target)
 console.log(`查找的索引为${findIndex}`)
 
 // 双向链表节点类
-class DoubleListNode {
+export class DoubleListNode {
     public val: number
     public next: DoubleListNode | null
     public prev: DoubleListNode | null

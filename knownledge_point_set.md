@@ -132,5 +132,14 @@
     ```
 
 -   执行 ts 文件时注意要配置 **tsconfig.json**。
+
     -   可以用 **tsc --init** 生成 tsconfig.json 文件。
+
+-   **TypeScript 断言**:是一种告诉编译器"你比它更了解类型"的方式，用于覆盖 TypeScript 的类型推断。
+    TypeScript 提供了几种类型的断言：
+    -   类型断言（Type Assertions）
+    -   非空断言（Non-null Assertion）
+    -   确定赋值断言（Definite Assignment Assertion）
+    -   常量断言（Const Assertion）
+    -   断言函数（Assertion Functions）
 

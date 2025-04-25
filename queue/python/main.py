@@ -8,7 +8,7 @@ sys.path.append(str(project_root))
 
 
 try:
-    from linkedList.python.main import ListNode
+    from linkedList.python.main import ListNode, DoubleListNode
 except ImportError:
     print("无法导入 ListNode，请检查模块路径是否正确。")
 
@@ -226,3 +226,131 @@ print("myDeque 获取双向队列的长度:", myDeque, size)
 # 判断双向队列是否为空
 is_empty: bool = len(myDeque) == 0
 print("myDeque 获取双向队列的长度:", myDeque, is_empty)
+
+
+class LinkedListDoubleEndedQueue:
+    """基于双向链表实现的双向队列"""
+
+    def __init__(self):
+        """构造方法"""
+        self._front: DoubleListNode | None = None  # 头节点
+        self._rear: DoubleListNode | None = None  # 尾节点
+        self._size: int = 0  # 双向队列的长度
+
+    def size(self) -> int:
+        """获取双向队列的长度"""
+        return self._size
+
+    def is_empty(self) -> bool:
+        """判断双向队列是否为空"""
+        return self._size == 0
+
+    def push(self, num: int, is_front: bool):
+        """入队操作"""
+        node = DoubleListNode(num)
+        # 若链表为空，则令front 和 rear 都指向 node
+        if self.is_empty():
+            self._front = self._rear = node
+        elif is_front:
+            # 将 node 添加至链表头部
+            self._front.prev = node
+            node.next = self._front
+            self._front = node  # 更新头节点
+        else:
+            # 将 node 添加至链表尾部
+            self._rear.next = node
+            node.prev = self._rear
+            self._rear = node  # 更新尾节点
+        self._size += 1  # 更新队列长度
+
+    def push_first(self, num: int):
+        """队首入队"""
+        self.push(num, True)
+
+    def push_last(self, num: int):
+        """队尾入队"""
+        self.push(num, False)
+
+    def pop(self, is_front: bool) -> int:
+        """出队操作"""
+        if self.is_empty():
+            raise IndexError("双向队列为空")
+        # 队首出队操作
+        if is_front:
+            val: int = self._front.val  # 暂存头节点的值
+            # 删除头节点
+            fnext: DoubleListNode | None = self._front.next
+            if fnext != None:
+                fnext.prev = None
+            self._front = fnext  # 更新头节点
+        # 队尾出队操作
+        else:
+            val: int = self._rear.val  # 暂存尾节点的值
+            # 删除尾节点
+            rprev: DoubleListNode | None = self._rear.prev
+            if rprev != None:
+                rprev.next = None
+            self._rear = rprev  # 更新尾节点
+        self._size -= 1  # 更新队列长度
+        return val
+
+    def pop_first(self) -> int:
+        """队首出队"""
+        return self.pop(True)
+
+    def pop_last(self) -> int:
+        """队尾出队"""
+        return self.pop(False)
+
+    def peek_first(self) -> int:
+        """访问队首元素"""
+        if self.is_empty():
+            raise IndexError("双向队列为空")
+        return self._front.val
+
+    def peek_last(self) -> int:
+        """访问队尾元素"""
+        if self.is_empty():
+            raise IndexError("双向队列为空")
+        return self._rear.val
+
+    def to_list(self) -> list[int]:
+        """返回数组用于打印"""
+        node = self._front
+        res = [0] * self.size()
+        for i in range(self.size()):
+            res[i] = node.val
+            node = node.next
+        return res
+
+
+# 双向队列初始化
+myDoubleEndedQueue = LinkedListDoubleEndedQueue()
+print("myDoubleEndedQueue 双向队列初始化:", myDoubleEndedQueue.to_list())
+# 双向队列长度
+dqSize = myDoubleEndedQueue.size()
+print("myDoubleEndedQueue 双向队列长度:", myDoubleEndedQueue.to_list(), dqSize)
+# 双向队列是否为空
+dqIsEmpty = myDoubleEndedQueue.is_empty()
+print("myDoubleEndedQueue 双向队列长度:", myDoubleEndedQueue.to_list(), dqIsEmpty)
+# 队首入队
+myDoubleEndedQueue.push_first(2)
+myDoubleEndedQueue.push_first(3)
+myDoubleEndedQueue.push_first(1)
+print("myDoubleEndedQueue 队首入队:", myDoubleEndedQueue.to_list())
+# 队尾入队
+myDoubleEndedQueue.push_last(5)
+myDoubleEndedQueue.push_last(4)
+print("myDoubleEndedQueue 队尾入队:", myDoubleEndedQueue.to_list())
+# 队首出队
+firstItem = myDoubleEndedQueue.pop_first()
+print("myDoubleEndedQueue 队首出队:", myDoubleEndedQueue.to_list(), firstItem)
+# 队尾出队
+lastItem = myDoubleEndedQueue.pop_last()
+print("myDoubleEndedQueue 队尾出队:", myDoubleEndedQueue.to_list(), lastItem)
+# 访问队首元素
+firstPeek = myDoubleEndedQueue.peek_first()
+print("myDoubleEndedQueue 访问队首元素:", myDoubleEndedQueue.to_list(), firstPeek)
+# 访问队尾元素
+lastPeek = myDoubleEndedQueue.peek_last()
+print("myDoubleEndedQueue 访问队尾元素:", myDoubleEndedQueue.to_list(), lastPeek)

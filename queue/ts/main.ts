@@ -1,4 +1,4 @@
-import { ListNode } from '../../linkedList/ts/main'
+import { ListNode, DoubleListNode } from '../../linkedList/ts/main'
 
 // 基于链表实现的队列
 class LinkedListQueue {
@@ -161,3 +161,174 @@ console.log('myArrayQueue 入队:', myArrayQueue.to_list())
 // 出队
 const item = myArrayQueue.pop()
 console.log('myArrayQueue 出队:', myArrayQueue.to_list(), item)
+
+/**
+ * 基于双向链表实现的双向队列
+ */
+class LinkedListDoubleEndedQueue {
+    private _front: DoubleListNode | null = null
+    private _rear: DoubleListNode | null = null
+    private _size: number = 0
+
+    constructor() {}
+
+    public size(): number {
+        return this._size
+    }
+
+    is_empty(): boolean {
+        return this._size === 0
+    }
+
+    private push(num: number, is_front: boolean) {
+        const node = new DoubleListNode(num)
+
+        if (this.is_empty()) {
+            this._front = this._rear = node
+        } else if (is_front) {
+            //  队首入队
+            this._front!.prev = node
+            node.next = this._front
+            this._front = node
+        } else {
+            // 队尾入队
+            this._rear!.next = node
+            node.prev = this._rear
+            this._rear = node
+        }
+
+        this._size += 1
+    }
+
+    push_first(num: number) {
+        this.push(num, true)
+    }
+
+    push_last(num: number) {
+        this.push(num, false)
+    }
+
+    private pop(is_front: boolean): number {
+        if (this.is_empty()) {
+            throw new Error('双向队列为空')
+        }
+
+        let num: number = -1
+
+        if (is_front) {
+            // 队首出队
+            num = this._front!.val
+            const fnext = this._front!.next
+            if (fnext) {
+                fnext.prev = null
+                this._front!.next = null // 可选，对链首断开无影响
+            }
+
+            this._front = fnext
+        } else {
+            // 队尾出队
+            num = this._rear!.val
+            const rprev = this._rear!.prev
+            if (rprev) {
+                rprev.next = null
+                this._rear!.prev = null // // 可选，对链尾断开无影响s
+            }
+
+            this._rear = rprev
+        }
+
+        this._size -= 1
+        return num
+    }
+
+    pop_first(): number {
+        return this.pop(true)
+    }
+
+    pop_last(): number {
+        return this.pop(false)
+    }
+
+    peek_first(): number {
+        if (this.is_empty()) {
+            throw new Error('双向队列为空')
+        }
+
+        return this._front!.val // 使用非空断言 (!) 确保 _front 存在
+    }
+
+    peek_last(): number {
+        if (this.is_empty()) {
+            throw new Error('双向队列为空')
+        }
+
+        return this._rear!.val
+    }
+    to_list(): number[] {
+        const res = []
+
+        let tempNode = this._front
+        while (tempNode) {
+            res.push(tempNode.val)
+            tempNode = tempNode.next
+        }
+
+        return res
+    }
+}
+
+// 双向队列初始化
+const myDoubleEndedQueue = new LinkedListDoubleEndedQueue()
+console.log('myDoubleEndedQueue 双向队列初始化:', myDoubleEndedQueue.to_list())
+// 双向队列长度
+const dqSize = myDoubleEndedQueue.size()
+console.log(
+    'myDoubleEndedQueue 双向队列长度:',
+    myDoubleEndedQueue.to_list(),
+    dqSize
+)
+// 双向队列是否为空
+const dqIsEmpty = myDoubleEndedQueue.is_empty()
+console.log(
+    'myDoubleEndedQueue 双向队列长度:',
+    myDoubleEndedQueue.to_list(),
+    dqIsEmpty
+)
+// 队首入队
+myDoubleEndedQueue.push_first(2)
+myDoubleEndedQueue.push_first(3)
+myDoubleEndedQueue.push_first(1)
+console.log('myDoubleEndedQueue 队首入队:', myDoubleEndedQueue.to_list())
+// 队尾入队
+myDoubleEndedQueue.push_last(5)
+myDoubleEndedQueue.push_last(4)
+console.log('myDoubleEndedQueue 队尾入队:', myDoubleEndedQueue.to_list())
+// 队首出队
+const firstItem = myDoubleEndedQueue.pop_first()
+console.log(
+    'myDoubleEndedQueue 队首出队:',
+    myDoubleEndedQueue.to_list(),
+    firstItem
+)
+// 队尾出队
+const lastItem = myDoubleEndedQueue.pop_last()
+console.log(
+    'myDoubleEndedQueue 队尾出队:',
+    myDoubleEndedQueue.to_list(),
+    lastItem
+)
+
+// 访问队首元素
+const firstPeek = myDoubleEndedQueue.peek_first()
+console.log(
+    'myDoubleEndedQueue 访问队首元素:',
+    myDoubleEndedQueue.to_list(),
+    firstPeek
+)
+// 访问队尾元素
+const lastPeek = myDoubleEndedQueue.peek_last()
+console.log(
+    'myDoubleEndedQueue 访问队尾元素:',
+    myDoubleEndedQueue.to_list(),
+    lastPeek
+)
