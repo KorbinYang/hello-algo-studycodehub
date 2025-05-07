@@ -339,3 +339,119 @@ console.log(
     myDoubleEndedQueue.to_list(),
     lastPeek
 )
+
+/**
+ * 基于数组实现双向队列的入队出队操作
+ */
+class Array2Queue {
+    constructor(capacity) {
+        this._nums = new Array(capacity).fill(0)
+        this._front = 0
+        this._size = 0
+    }
+
+    capacity() {
+        return this._nums.length
+    }
+
+    size() {
+        return this._size
+    }
+
+    is_empty() {
+        return this._size === 0
+    }
+
+    // 计算环形数组索引
+    index(i) {
+        const trueIndex = (i + this.capacity()) % this.capacity()
+        return trueIndex
+    }
+
+    push_first(num) {
+        if (this.size() === this.capacity()) {
+            console.log('双向队列已满')
+            return
+        }
+
+        this._front = this.index(this._front - 1)
+        this._nums[this._front] = num
+        this._size += 1
+    }
+
+    push_last(num) {
+        if (this.size() === this.capacity()) {
+            console.log('双向队列已满')
+            return
+        }
+
+        const rear = this.index(this._front + this.size())
+        this._nums[rear] = num
+        this._size += 1
+    }
+
+    peek_first() {
+        if (this.is_empty()) {
+            throw new Error('双向队列为空')
+        }
+
+        const num = this._nums[this._front]
+
+        return num
+    }
+
+    peek_last() {
+        if (this.is_empty()) {
+            throw new Error('双向队列为空')
+        }
+
+        const num = this._nums[this.index(this._front + this.size() - 1)]
+        return num
+    }
+
+    pop_first() {
+        const num = this.peek_first()
+        this._front = this.index(this._front + 1)
+        this._size -= 1
+        return num
+    }
+
+    pop_last() {
+        const num = this.peek_last()
+        this._size -= 1
+        return num
+    }
+
+    to_array() {
+        const res = []
+        for (let i = 0; i < this.size(); i++) {
+            res.push(this._nums[this.index(this._front + i)])
+        }
+
+        return res
+    }
+}
+
+// 实例化双向队列
+const myArray2Queue = new Array2Queue(10)
+console.log(
+    'myArray2Queue:',
+    myArray2Queue.to_array(),
+    myArray2Queue.capacity(),
+    myArray2Queue.size()
+)
+// 双向队列队首入队
+myArray2Queue.push_first(2)
+myArray2Queue.push_first(3)
+myArray2Queue.push_first(1)
+console.log('双向队列队首入队:', myArray2Queue.to_array())
+// 双向队列队尾入队
+myArray2Queue.push_last(5)
+myArray2Queue.push_last(4)
+console.log('双向队列队尾入队:', myArray2Queue.to_array())
+// 双向队列队首出队
+const firstNum = myArray2Queue.pop_first()
+console.log('双向队列队首出队:', firstNum, myArray2Queue.to_array())
+// 双向队列队尾出队
+const lastNum = myArray2Queue.pop_last()
+console.log('双向队列队尾出队:', myArray2Queue.to_array(), lastNum)

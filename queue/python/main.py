@@ -354,3 +354,115 @@ print("myDoubleEndedQueue 访问队首元素:", myDoubleEndedQueue.to_list(), fi
 # 访问队尾元素
 lastPeek = myDoubleEndedQueue.peek_last()
 print("myDoubleEndedQueue 访问队尾元素:", myDoubleEndedQueue.to_list(), lastPeek)
+
+
+# 基于数组实现双向队列的入队出队操作
+class Array2Queue:
+    def __init__(self, capacity: int):
+        """构造方法"""
+        self._nums: list[int] = [0] * capacity
+        self._front: int = 0
+        self._size: int = 0
+
+    def capacity(self) -> int:
+        """获取双向队列的容量"""
+        return len(self._nums)
+
+    def size(self) -> int:
+        """获取双向队列的长度"""
+        return self._size
+
+    def is_empty(self) -> bool:
+        """判断双向队列是否为空"""
+        return self._size == 0
+
+    def index(self, i: int) -> int:
+        """计算环形数组索引"""
+        # 通过取余操作实现数组首位相连
+        # 当 i 越过数组尾部后，回到头部
+        # 当 i 越过数组头部后，回到尾部
+        return (i + self.capacity()) % self.capacity()
+
+    def push_first(self, num: int):
+        """队首入队"""
+        if self._size == self.capacity():
+            print("双向队列已满")
+            return
+        # 队首指针向左移动一位
+        # 通过取余操作实现 front 越过数组头部后回到尾部
+        self._front = self.index(self._front - 1)
+        # 将 num 添加至队首
+        self._nums[self._front] = num
+        self._size += 1
+
+    def push_last(self, num: int):
+        """队尾入队"""
+        if self._size == self.capacity():
+            print("双向队列已满")
+            return
+        # 队尾向右移动一位
+        # 通过取余操作使队尾超出容量后回到队首
+        rear = self.index(self._front + self.size())
+        # 将 num 添加至队尾
+        self._nums[rear] = num
+        self._size += 1
+
+    def pop_first(self) -> int:
+        """队首出队"""
+        num = self.peek_first()
+        # 队首指针向后移动一位
+        self._front = self.index(self._front + 1)
+        self._size -= 1
+        return num
+
+    def pop_last(self) -> int:
+        """队尾出队"""
+        num = self.peek_last()
+        self._size -= 1
+        return num
+
+    def peek_first(self) -> int:
+        """访问队首元素"""
+        if self.is_empty():
+            raise IndexError("双向队列为空")
+        return self._nums[self._front]
+
+    def peek_last(self) -> int:
+        if self.is_empty():
+            raise IndexError("双向队列为空")
+        # 计算队尾元素索引
+        last = self.index(self._front + self.size() - 1)
+        return self._nums[last]
+
+    def to_array(self) -> list[int]:
+        """返回数组用于打印"""
+        # 仅转换有效长度范围内的列表元素
+        res = []
+        for i in range(self.size()):
+            res.append(self._nums[self.index(self._front + i)])
+        return res
+
+
+# 实例化双向队列
+myArray2Queue = Array2Queue(10)
+print(
+    "myArray2Queue:",
+    myArray2Queue.to_array(),
+    myArray2Queue.capacity(),
+    myArray2Queue.size(),
+)
+# 双向队列队首入队
+myArray2Queue.push_first(2)
+myArray2Queue.push_first(3)
+myArray2Queue.push_first(1)
+print("双向队列队首入队:", myArray2Queue.to_array())
+# 双向队列队尾入队
+myArray2Queue.push_last(5)
+myArray2Queue.push_last(4)
+print("双向队列队尾入队:", myArray2Queue.to_array())
+# 双向队列队首出队
+firstNum = myArray2Queue.pop_first()
+print("双向队列队首出队:", firstNum, myArray2Queue.to_array())
+# 双向队列队尾出队
+lastNum = myArray2Queue.pop_last()
+print("双向队列队尾出队:", myArray2Queue.to_array(), lastNum)
