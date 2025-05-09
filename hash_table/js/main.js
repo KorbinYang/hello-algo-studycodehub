@@ -50,3 +50,117 @@ const values = hmap.values()
 for (const val of values) {
     console.log(val)
 }
+
+/**
+ * 使用数组实现一个简单的哈希表（key -> 哈希函数 -> 桶 -> value）
+ */
+class Pair {
+    constructor(key, val) {
+        this.key = key
+        this.val = val
+    }
+}
+
+class ArrayHashMap {
+    constructor() {
+        this._buckets = new Array(100)
+    }
+
+    hash_func(key) {
+        const index = key % 100
+        return index
+    }
+
+    get(key) {
+        const pair = this._buckets[this.hash_func(key)]
+        if (pair) {
+            return pair.val
+        }
+    }
+
+    put(key, val) {
+        const pair = new Pair(key, val)
+        this._buckets[this.hash_func(key)] = pair
+    }
+
+    remove(key) {
+        this._buckets[this.hash_func(key)] = undefined
+    }
+
+    entry_set() {
+        const res = []
+
+        this._buckets.forEach((pair) => {
+            if (pair) {
+                res.push(pair)
+            }
+        })
+
+        return res
+    }
+
+    key_set() {
+        const res = []
+        this._buckets.forEach((pair) => {
+            if (pair) {
+                res.push(pair.key)
+            }
+        })
+
+        return res
+    }
+
+    value_set() {
+        const res = []
+        this._buckets.forEach((pair) => {
+            if (pair) {
+                res.push(pair.val)
+            }
+        })
+        return res
+    }
+
+    print() {
+        this._buckets.forEach((pair) => {
+            if (pair) {
+                console.log(pair.key, '->', pair.val)
+            }
+        })
+    }
+}
+
+// 初始自定义化哈希表
+const arrHamp = new ArrayHashMap()
+arrHamp.print()
+
+// 添加操作
+// 在哈希表中添加键值对(key, value)
+arrHamp.put(111, '一一')
+arrHamp.put(222, '二二')
+arrHamp.put(333, '三三')
+arrHamp.print()
+
+// 查询操作
+const namestring = arrHamp.get(333)
+console.log('namestring', namestring)
+
+// 删除操作
+// 在哈希表中删除键值对(key, value)
+arrHamp.remove(222)
+arrHamp.print()
+
+// 遍历哈希表
+// 遍历键值对
+arrHamp.entry_set().forEach((pair) => {
+    console.log(pair.key, '-->', pair.val)
+})
+
+// 单独遍历键 key
+arrHamp.key_set().forEach((key) => {
+    console.log(key)
+})
+
+// 单独遍历值 value
+arrHamp.value_set().forEach((val) => {
+    console.log(val)
+})
