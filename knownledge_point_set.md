@@ -18,6 +18,8 @@
 
 ### Python
 
+-   列表的**remove 方法**: 在 Python 中，列表（list）的 remove() 方法用于移除列表中第一个匹配的指定值。
+
 -   在 Python 中，**list[-1]** 表示访问列表的**最后一个元素**。
 
 -   在 Python 中，**冒号:**在这种 self.\_arr[: self._size] 上下文中表示 **切片操作（slicing）**。具体到 self.\_arr[: self._size]，它的含义是从列表 self.\_arr 中提取从索引 0 开始到索引 \_size（不包括 \_size）的子列表。
@@ -71,6 +73,8 @@
 -   enumerate(): 在 Python 中，enumerate 是一个非常有用的**内置函数**，用于在遍历可迭代对象（如列表、元组等）时**同时获取元素的索引和值**。
 
 ### Javascript
+
+-   在 JavaScript 中，Array.fill() 方法使用的是**浅拷贝**（shallow copy），如果填充的是**引用类型**（如数组、对象等），那么**所有位置填充的都是同一个引用地址**。
 
 -   在 JavaScript 中，**数组（Array）**是一种用于存储有序数据集合的**对象**，可以动态调整大小，并且可以包含任意类型的元素。
 

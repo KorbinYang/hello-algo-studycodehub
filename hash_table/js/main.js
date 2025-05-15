@@ -164,3 +164,130 @@ arrHamp.key_set().forEach((key) => {
 arrHamp.value_set().forEach((val) => {
     console.log(val)
 })
+
+/**
+ * 链式地址哈希表的简单实现
+ */
+class HashMapChaining {
+    constructor() {
+        this._capacity = 4
+        this._size = 0
+        this._buckets = new Array(this._capacity).fill(0).map(() => [])
+        this._extend_ratio = 2
+        this._load_thres = 2 / 3
+    }
+
+    hash_func(key) {
+        return key % this._capacity
+    }
+
+    load_factor() {
+        return this._size / this._capacity
+    }
+
+    extend() {
+        // 暂存buckets
+        const buckets = this._buckets
+
+        // 初始化 this._buckets
+        this._capacity *= this._extend_ratio
+        this._buckets = new Array(this._capacity).fill(0).map(() => [])
+        this._size = 0
+
+        // 将原键值对添加至扩容后的哈希表
+        buckets.forEach((bucket) => {
+            bucket.forEach((pair) => {
+                this.put(pair.key, pair.val)
+            })
+        })
+    }
+    put(key, val) {
+        if (this.load_factor() > this._load_thres) {
+            this.extend()
+        }
+
+        const index = this.hash_func(key)
+        const bucket = this._buckets[index]
+
+        for (const pair of bucket) {
+            if (pair.key === key) {
+                pair.val = val
+                return
+            }
+        }
+
+        const pair = new Pair(key, val)
+        bucket.push(pair)
+        this._size += 1
+    }
+
+    remove(key) {
+        const index = this.hash_func(key)
+        const bucket = this._buckets[index]
+
+        for (let i = 0; i < bucket.length; i++) {
+            if (bucket[i].key === key) {
+                bucket.splice(i, 1)
+                break
+            }
+        }
+    }
+
+    get(key) {
+        const index = this.hash_func(key)
+        const bucket = this._buckets[index]
+
+        for (const pair of bucket) {
+            if (pair.key === key) {
+                return pair.val
+            }
+        }
+
+        return null
+    }
+
+    print() {
+        this._buckets.forEach((bucket) => {
+            const res = []
+            bucket.forEach((pair) => {
+                res.push(pair.key + '->' + pair.val)
+            })
+            console.log(res)
+        })
+    }
+}
+
+// 初始化链式地址哈希表
+const hamp_cha = new HashMapChaining()
+console.log('初始化链式地址哈希表:')
+hamp_cha.print()
+
+// 增
+console.log('增：')
+hamp_cha.put(111, 'aaa')
+hamp_cha.put(222, 'bbb')
+hamp_cha.put(333, 'ccc')
+console.log('负载因子:', hamp_cha.load_factor())
+console.log('容量：', hamp_cha._capacity)
+hamp_cha.print()
+// 增-扩容
+hamp_cha.put(444, 'ddd')
+hamp_cha.put(555, 'eee')
+console.log('负载因子:', hamp_cha.load_factor())
+console.log('容量：', hamp_cha._capacity)
+hamp_cha.print()
+
+// 删
+hamp_cha.remove(555)
+console.log('删:')
+hamp_cha.print()
+
+// 查
+console.log('查:')
+const value = hamp_cha.get(333)
+console.log(value)
+
+// 改
+console.log('改')
+hamp_cha.put(444, 'fff')
+hamp_cha.print()
