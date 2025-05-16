@@ -291,3 +291,142 @@ console.log(value)
 console.log('改')
 hamp_cha.put(444, 'fff')
 hamp_cha.print()
+
+// 包含懒删除的开放寻址（线性探测）哈希表的实现
+class HahsMapOpenAddressing {
+    constructor() {
+        this._capacity = 4
+        this._size = 0
+        this._extend_ratio = 2
+        this._load_thres = 2 / 3
+        this._TOMBSTONE = new Pair(-1, '-1')
+        this._buckets = new Array(this._capacity).fill(null)
+    }
+
+    hash_func(key) {
+        return key % this._capacity
+    }
+
+    load_factor() {
+        return this._size / this._capacity
+    }
+
+    find_bucket(key) {
+        let index = this.hash_func(key)
+        let firstTombstoneIndex = -1
+
+        while (this._buckets[index]) {
+            if (this._buckets[index].key === key) {
+                // 如果之前遇到删除标记
+                if (firstTombstoneIndex !== -1) {
+                    this._buckets[firstTombstoneIndex] = this._buckets[index]
+                    this._buckets[index] = this._TOMBSTONE
+                    return firstTombstoneIndex
+                }
+                return index
+            }
+            // 记录第一次遇到删除标记的index
+            if (firstTombstoneIndex === -1 && this._buckets[index].key === -1) {
+                firstTombstoneIndex = index
+            }
+
+            index = (index + 1) % this._capacity
+        }
+
+        return firstTombstoneIndex === -1 ? index : firstTombstoneIndex
+    }
+
+    put(key, val) {
+        if (this.load_factor() > this._load_thres) {
+            this.extend()
+        }
+
+        const index = this.find_bucket(key)
+
+        if (
+            this._buckets[index] &&
+            this._buckets[index].key !== -1 &&
+            this._buckets[index].key === key
+        ) {
+            this._buckets[index].val = val
+            return
+        }
+
+        const pair = new Pair(key, val)
+        this._buckets[index] = pair
+        this._size += 1
+    }
+
+    extend() {
+        const buckets = this._buckets
+
+        this._capacity *= this._extend_ratio
+        this._size = 0
+        this._buckets = new Array(this._capacity).fill(null)
+
+        for (const bucket of buckets) {
+            if (bucket && bucket.key !== -1) {
+                this.put(bucket.key, bucket.val)
+            }
+        }
+    }
+
+    remove(key) {
+        const index = this.find_bucket(key)
+        if (this._buckets[index] && this._buckets[index].key !== -1) {
+            this._buckets[index] = this._TOMBSTONE
+            this._size -= 1
+        }
+    }
+
+    get(key) {
+        const index = this.find_bucket(key)
+        if (this._buckets[index] && this._buckets[index].key !== -1) {
+            return this._buckets[index].val
+        }
+        return null
+    }
+
+    print() {
+        for (const bucket of this._buckets) {
+            if (!bucket) {
+                console.log(null)
+            } else if (bucket.key === -1) {
+                console.log('TOMBSTONE')
+            } else {
+                console.log(bucket.key, '->', bucket.val)
+            }
+        }
+    }
+}
+
+// 实例化开放寻址(线性探测)哈希表
+const hmap_open = new HahsMapOpenAddressing()
+console.log('实例化哈希表:', hmap_open._capacity, hmap_open._size)
+hmap_open.print()
+// 增
+hmap_open.put(111, 'aaa')
+hmap_open.put(222, 'bbb')
+hmap_open.put(333, 'ccc')
+console.log('增:', hmap_open._capacity, hmap_open._size)
+hmap_open.print()
+// 增-扩容
+hmap_open.put(444, 'ddd')
+hmap_open.put(555, 'eee')
+console.log('增-扩容:', hmap_open._capacity, hmap_open._size)
+hmap_open.print()
+
+// 删
+hmap_open.remove(555)
+console.log('删:', hmap_open._capacity, hmap_open._size)
+hmap_open.print()
+
+// 查
+const val_open = hmap_open.get(333)
+console.log('查:', hmap_open._capacity, hmap_open._size, val_open)
+hmap_open.print()
+
+// 改
+hmap_open.put(444, 'fff')
+console.log('改:', hmap_open._capacity, hmap_open._size)
+hmap_open.print()

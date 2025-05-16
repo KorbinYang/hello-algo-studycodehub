@@ -259,3 +259,137 @@ print(value)
 print("改:")
 hmapcha.put(444, "fff")
 hmapcha.print()
+
+
+# 包含懒删除的开放寻址（线性探测）哈希表的实现
+class HashMapOpenAddresssing:
+    """开放寻址哈希表"""
+
+    def __init__(self):
+        """构造方法"""
+        self._size = 0  # 键值对数量
+        self._capacity = 4  # 哈希表容量
+        self._load_thres = 2 / 3  # 触发扩容的负载因子阈值
+        self._extend_ratio = 2  # 扩容倍数
+        self._buckets: list[Pair | None] = [None] * self._capacity  # 桶数量
+        self._TOMBSTONE = Pair(-1, "-1")  # 删除标记
+
+    def hash_func(self, key: int) -> int:
+        """哈希函数"""
+        return key % self._capacity
+
+    def load_factor(self) -> float:
+        """负载因子"""
+        return self._size / self._capacity
+
+    def find_bucket(self, key: int) -> int:
+        """搜索 key 对应的桶索引"""
+        index = self.hash_func(key)
+        first_tombstone = -1
+        # 线性探测，当遇到空桶时跳出
+        while self._buckets[index] is not None:
+            # 若遇到 key,返回对应的桶索引
+            if self._buckets[index].key == key:
+                # 若之前遇到了删除标记，则将键值对移动至该索引处
+                if first_tombstone != -1:
+                    self._buckets[first_tombstone] = self._buckets[index]
+                    self._buckets[index] = self._TOMBSTONE
+                    return first_tombstone
+                return index  # 返回桶索引
+            # 记录首个遇到的删除标记
+            if first_tombstone == -1 and self._buckets[index] is self._TOMBSTONE:
+                first_tombstone = index
+            # 计算桶索引，越过尾部则返回头部
+            index = (index + 1) % self._capacity
+        # 若 key不存在，则返回添加点的索引
+        return index if first_tombstone == -1 else first_tombstone
+
+    def get(self, key: int) -> str:
+        """查询操作"""
+        # 搜索 key 对应的桶索引
+        index = self.find_bucket(key)
+        # 若找到键值对，则返回对应 val
+        if self._buckets[index] not in [None, self._TOMBSTONE]:
+            return self._buckets[index].val
+        # 若键值对不存在，则返回 None
+        return None
+
+    def put(self, key: int, val: str):
+        """添加操作"""
+        # 当负载因子超过阈值时，执行扩容
+        if self.load_factor() > self._load_thres:
+            self.extend()
+        # 搜索 key 对应的桶索引
+        index = self.find_bucket(key)
+        # 若找到键值对，则覆盖 val 并返回
+        if self._buckets[index] not in [None, self._TOMBSTONE]:
+            self._buckets[index].val = val
+            return
+        # 若键值对不存在，则添加该键值对
+        self._buckets[index] = Pair(key, val)
+        self._size += 1
+
+    def remove(self, key: int):
+        """删除操作"""
+        # 搜索 key 对应的桶索引
+        index = self.find_bucket(key)
+        # 若找到键值对，则用删除标记覆盖它
+        if self._buckets[index] not in [None, self._TOMBSTONE]:
+            self._buckets[index] = self._TOMBSTONE
+            self._size -= 1
+
+    def extend(self):
+        """扩容哈希表"""
+        # 暂存哈希表
+        buckets_tmp = self._buckets
+        # 初始化扩容后的哈希表
+        self._capacity *= self._extend_ratio
+        self._buckets = [None] * self._capacity
+        self._size = 0
+        # 将键值对从原哈希表搬运至新哈希表
+        for pair in buckets_tmp:
+            if pair not in [None, self._TOMBSTONE]:
+                self.put(pair.key, pair.val)
+
+    def print(self):
+        """打印哈希表"""
+        for pair in self._buckets:
+            if pair is None:
+                print("None")
+            elif pair is self._TOMBSTONE:
+                print("TOMBSTONE")
+            else:
+                print(pair.key, "->", pair.val)
+
+
+# 实例化开放寻址(线性探测)哈希表
+hmap_open = HashMapOpenAddresssing()
+print("实例化哈希表:", hmap_open._capacity, hmap_open._size)
+hmap_open.print()
+
+# 增
+hmap_open.put(111, "aaa")
+hmap_open.put(222, "bbb")
+hmap_open.put(333, "ccc")
+print("增:", hmap_open._capacity, hmap_open._size)
+hmap_open.print()
+# 增-扩容
+hmap_open.put(444, "ddd")
+hmap_open.put(555, "eee")
+print("增-扩容:", hmap_open._capacity, hmap_open._size)
+hmap_open.print()
+
+# 删
+hmap_open.remove(555)
+print("删:", hmap_open._capacity, hmap_open._size)
+hmap_open.print()
+
+# 查
+val_open = hmap_open.get(333)
+print("查:", hmap_open._capacity, hmap_open._size, val_open)
+hmap_open.print()
+
+# 改
+hmap_open.put(444, "fff")
+print("改:", hmap_open._capacity, hmap_open._size)
+hmap_open.print()
