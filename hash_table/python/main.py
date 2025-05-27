@@ -1,3 +1,17 @@
+import sys
+from pathlib import Path
+from collections import deque
+
+# 获取当前文件的父目录的父目录的父目录（项目根目录）
+project_root = Path(__file__).parent.parent.parent
+sys.path.append(str(project_root))
+
+
+try:
+    from linkedList.python.main import ListNode
+except ImportError:
+    print("无法导入 ListNode，请检查模块路径是否正确。")
+
 # 哈希表常用操作
 # 初始化哈希表
 hmap: dict = {}
@@ -447,3 +461,31 @@ print("异或哈希:", hash_result2)
 # 旋转哈希
 hash_result3 = rot_hash("hello")
 print("旋转哈希:", hash_result3)
+
+# 调用编程语言内置函数计算各类数据类型的哈希值
+num = 3
+hash_num = hash(num)
+print(hash_num)
+# 整数的哈希值为 3
+
+bol = True
+hash_bol = hash(bol)
+print(hash_bol)
+# 布尔量 True 的哈希值为 1
+
+dec = 3.14159
+hash_dec = hash(dec)
+print(hash_dec)
+# 小数 3.14159 的哈希值为
+
+str = "Hello 算法"
+hash_str = hash(str)
+print(hash_str)
+
+tup = (12836, "小哈")
+hash_tup = hash(tup)
+print(hash_tup)
+
+obj = ListNode(0)
+hash_obj = hash(obj)
+print(hash_obj)

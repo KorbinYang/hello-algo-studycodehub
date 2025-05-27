@@ -1,3 +1,6 @@
+import { ListNode } from '../../linkedList/ts/main'
+import * as crypto from 'crypto'
+
 // 哈希表常用操作
 // 初始化哈希表
 const hmap = new Map()
@@ -520,3 +523,25 @@ console.log('异或哈希:', hash_result2)
 // 旋转哈希
 const hash_result3 = rot_hash('hello')
 console.log('旋转哈希:', hash_result3)
+
+const num = 3
+const hash_num = crypto
+    .createHash('sha256')
+    .update(num.toString())
+    .digest('hex')
+console.log(hash_num)
+
+const bol = true
+const hash_bol = crypto.createHash('sha256').update(String(bol)).digest('hex')
+console.log(hash_bol)
+
+const dec = 3.14159
+const hash_dec = crypto
+    .createHash('sha256')
+    .update(dec.toString())
+    .digest('hex')
+console.log(hash_dec)
+
+const obj = new ListNode(0)
+const hash_obj = crypto.createHash('sha256').update(String(obj)).digest('hex')
+console.log(hash_obj)
