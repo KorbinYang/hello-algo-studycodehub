@@ -464,3 +464,59 @@ hmap_open.print()
 hmap_open.put(444, 'fff')
 console.log('改:', hmap_open._capacity, hmap_open._size)
 hmap_open.print()
+
+// 哈希算法的设计
+/**
+ * 加法哈希
+ */
+function add_hash(key: string): number {
+    let hash = 0
+    const modules = 1000000007
+    for (const char of key) {
+        hash += char.charCodeAt(0)
+    }
+    return hash % modules
+}
+
+function mul_hash(key: string): number {
+    let hash = 0
+    const modules = 1000000007
+    for (const char of key) {
+        hash = 31 * hash + char.charCodeAt(0)
+    }
+    return hash % modules
+}
+
+function xor_hash(key: string): number {
+    let hash = 0
+    const modules = 1000000007
+    for (const char of key) {
+        hash ^= char.charCodeAt(0)
+    }
+    return hash % modules
+}
+
+function rot_hash(key: string): number {
+    let hash = 0
+    const modules = 1000000007
+    for (const char of key) {
+        hash = (hash << 4) ^ (hash >> 28) ^ char.charCodeAt(0)
+    }
+    return hash % modules
+}
+
+// 加法哈希
+const hash_result = add_hash('hello')
+console.log('加法哈希:', hash_result)
+
+// 乘法哈希
+const hash_result1 = mul_hash('hello')
+console.log('乘法哈希:', hash_result1)
+
+// 异或哈希
+const hash_result2 = xor_hash('hello')
+console.log('异或哈希:', hash_result2)
+
+// 旋转哈希
+const hash_result3 = rot_hash('hello')
+console.log('旋转哈希:', hash_result3)

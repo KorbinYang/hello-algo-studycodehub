@@ -393,3 +393,57 @@ hmap_open.print()
 hmap_open.put(444, "fff")
 print("改:", hmap_open._capacity, hmap_open._size)
 hmap_open.print()
+
+
+# 哈希算法的设计
+def add_hash(key: str) -> int:
+    """加法哈希"""
+    hash = 0
+    modules = 1000000007
+    for c in key:
+        hash += ord(c)
+    return hash % modules
+
+
+def mul_hash(key: str) -> int:
+    """乘法哈希"""
+    hash = 0
+    modules = 1000000007
+    for c in key:
+        hash = 31 * hash + ord(c)
+    return hash % modules
+
+
+def xor_hash(key: str) -> int:
+    """异或哈希"""
+    hash = 0
+    modules = 1000000007
+    for c in key:
+        hash ^= ord(c)
+    return hash % modules
+
+
+def rot_hash(key: str) -> int:
+    """旋转哈希"""
+    hash = 0
+    modules = 1000000007
+    for c in key:
+        hash = (hash << 4) ^ (hash >> 28) ^ ord(c)
+    return hash % modules
+
+
+# 加法哈希
+hash_result = add_hash("hello")
+print("加法哈希:", hash_result)
+
+# 乘法哈希
+hash_result1 = mul_hash("hello")
+print("乘法哈希:", hash_result1)
+
+# 异或哈希
+hash_result2 = xor_hash("hello")
+print("异或哈希:", hash_result2)
+
+# 旋转哈希
+hash_result3 = rot_hash("hello")
+print("旋转哈希:", hash_result3)
