@@ -10,6 +10,8 @@
 
 # [链表（linked list）:](./linkedList/linkedList.md)
 
+# [二分查找（binary_search）:](./binary_search/binary_search.md)
+
 ---
 
 # 附录：
