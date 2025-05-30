@@ -30,3 +30,27 @@ p.left = n2
 // 删除节点 p
 n1.left = n2
 
+function level_order(root) {
+    const queue = []
+    queue.push(root)
+
+    const res = []
+
+    while (queue.length > 0) {
+        const node = queue.shift()
+        res.push(node.val)
+
+        if (node.left !== null) {
+            queue.push(node.left)
+        }
+        if (node.right !== null) {
+            queue.push(node.right)
+        }
+    }
+
+    return res
+}
+
+const testList = level_order(n1)
+console.log('层序遍历n1:', testList)
+
