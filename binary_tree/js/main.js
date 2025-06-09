@@ -54,3 +54,54 @@ function level_order(root) {
 const testList = level_order(n1)
 console.log('层序遍历n1:', testList)
 
+/**
+ * 二叉树的深度优先遍历（前序、中序、后序遍历）
+ */
+function pre_order(root) {
+    // 前序遍历
+    const res = []
+    if (root === null) {
+        return res
+    }
+
+    res.push(root.val)
+    res.push(...pre_order(root.left))
+    res.push(...pre_order(root.right))
+    return res
+}
+
+function in_order(root) {
+    // 中序遍历
+    const res = []
+    if (root === null) {
+        return res
+    }
+
+    res.push(...in_order(root.left))
+    res.push(root.val)
+    res.push(...in_order(root.right))
+    return res
+}
+
+function post_order(root) {
+    // 后序遍历
+    const res = []
+    if (root === null) {
+        return res
+    }
+
+    res.push(...post_order(root.left))
+    res.push(...post_order(root.right))
+    res.push(root.val)
+    return res
+}
+
+const tesPretList = pre_order(n1)
+console.log('前序遍历n1:', tesPretList)
+
+const tesIntList = in_order(n1)
+console.log('中序遍历n1:', tesIntList)
+
+const tesPosttList = post_order(n1)
+console.log('后序遍历n1:', tesPosttList)
+

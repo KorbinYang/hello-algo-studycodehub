@@ -54,3 +54,45 @@ def level_order(root: TreeNode | None) -> list[int]:
 
 testList = level_order(n1)
 print("层序遍历n1:", testList)
+
+
+# 二叉树的深度优先遍历（前序、中序、后序遍历）
+def pre_order(root: TreeNode | None) -> list[int]:
+    """前序遍历"""
+    res = []
+    if root is None:
+        return res
+    # 访问优先级：根节点 -> 左子树 -> 右子树
+    res.append(root.val)  # 根节点
+    res += pre_order(root.left)  # 左子树
+    res += pre_order(root.right)  # 右子树
+    return res
+
+
+def in_order(root: TreeNode | None) -> list[int]:
+    """中序遍历"""
+    res = []
+    if root is None:
+        return res
+    res += in_order(root.left)
+    res.append(root.val)
+    res += in_order(root.right)
+    return res
+
+
+def post_order(root: TreeNode | None) -> list[int]:
+    """后序遍历"""
+    res = []
+    if root is None:
+        return res
+    res += post_order(root.left)
+    res += post_order(root.right)
+    res.append(root.val)
+    return res
+
+
+testPreList = pre_order(n1)
+print("前序遍历n1:", testPreList)
+
+testInList = in_order(n1)
+print("中序遍历n1:", testInList)
