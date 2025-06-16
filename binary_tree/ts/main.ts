@@ -106,3 +106,104 @@ console.log('中序遍历n1:', tesIntList)
 const tesPosttList = post_order(n1)
 console.log('后序遍历n1:', tesPosttList)
 
+// 基于数组表示的二叉树
+class ArrayBinaryTree {
+    private _tree: Array<number | null> = []
+    private _res: number[] = []
+
+    constructor(arr: Array<number | null>) {
+        this._tree = arr
+    }
+
+    private _size() {
+        return this._tree.length
+    }
+
+    private _val(i: number): number | null {
+        if (i < 0 || i >= this._size()) {
+            return null
+        }
+
+        return this._tree[i]
+    }
+
+    private _left(i: number) {
+        return 2 * i + 1
+    }
+
+    private _right(i: number) {
+        return 2 * i + 2
+    }
+
+    private _parent(i: number) {
+        return Math.floor((i - 1) / 2)
+    }
+
+    public level_order() {
+        this._res = [] // 初始化返回结果
+
+        for (let i = 0; i < this._size(); i++) {
+            if (this._val(i) !== null) {
+                this._res.push(this._val(i) as number)
+            }
+        }
+
+        return this._res
+    }
+
+    private dfs(i: number, order: string) {
+        // 终止条件
+        if (this._val(i) === null) {
+            return
+        }
+
+        // 前序遍历
+        if (order === 'pre') {
+            this._res.push(this._val(i) as number)
+        }
+        this.dfs(this._left(i), order)
+        // 中序遍历
+        if (order === 'in') {
+            this._res.push(this._val(i) as number)
+        }
+        this.dfs(this._right(i), order)
+        // 后序遍历
+        if (order === 'post') {
+            this._res.push(this._val(i) as number)
+        }
+    }
+
+    pre_order() {
+        this._res = []
+        this.dfs(0, 'pre')
+        return this._res
+    }
+
+    in_order() {
+        this._res = []
+        this.dfs(0, 'in')
+        return this._res
+    }
+
+    post_order() {
+        this._res = []
+        this.dfs(0, 'post')
+        return this._res
+    }
+}
+
+const testNormalArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+const testBinaryTree = new ArrayBinaryTree(testNormalArray)
+
+// 数组表示二叉树-层序遍历
+console.log('数组表示二叉树-层序遍历:', testBinaryTree.level_order())
+
+// 数组表示二叉树-递归前序遍历
+console.log('数组表示二叉树-递归前序遍历:', testBinaryTree.pre_order())
+
+// 数组表示二叉树-递归中序遍历
+console.log('数组表示二叉树-递归中序遍历:', testBinaryTree.in_order())
+
+// 数组表示二叉树-递归后序遍历
+console.log('数组表示二叉树-递归后序遍历:', testBinaryTree.post_order())
+

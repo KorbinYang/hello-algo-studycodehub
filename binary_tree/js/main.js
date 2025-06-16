@@ -105,3 +105,97 @@ console.log('中序遍历n1:', tesIntList)
 const tesPosttList = post_order(n1)
 console.log('后序遍历n1:', tesPosttList)
 
+// 基于数组表示的二叉树
+class ArrayBinaryTree {
+    constructor(list) {
+        this._tree = list
+        this.res = []
+    }
+
+    size() {
+        return this._tree.length
+    }
+
+    val(i) {
+        if (i < 0 || i >= this.size()) {
+            return null
+        }
+        return this._tree[i]
+    }
+
+    left(i) {
+        return 2 * i + 1
+    }
+
+    right(i) {
+        return 2 * i + 2
+    }
+
+    parent(i) {
+        return Math.floor((i - 1) / 2)
+    }
+
+    level_order() {
+        this.res = [] // 初始化返回结果
+
+        for (let i = 0; i < this.size(); i++) {
+            if (this.val(i) !== null) {
+                this.res.push(this.val(i))
+            }
+        }
+
+        return this.res
+    }
+
+    dfs(i, order) {
+        // 终止条件
+        if (this.val(i) === null) {
+            return
+        }
+
+        if (order === 'pre') {
+            this.res.push(this.val(i))
+        }
+        this.dfs(this.left(i), order)
+        if (order === 'in') {
+            this.res.push(this.val(i))
+        }
+        this.dfs(this.right(i), order)
+        if (order === 'post') {
+            this.res.push(this.val(i))
+        }
+    }
+
+    pre_order() {
+        this.res = []
+        this.dfs(0, 'pre')
+        return this.res
+    }
+
+    in_order() {
+        this.res = []
+        this.dfs(0, 'in')
+        return this.res
+    }
+
+    post_order() {
+        this.res = []
+        this.dfs(0, 'post')
+        return this.res
+    }
+}
+const testNormalArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+const testBinaryTree = new ArrayBinaryTree(testNormalArray)
+
+// 数组表示二叉树-层序遍历
+console.log('数组表示二叉树-层序遍历:', testBinaryTree.level_order())
+
+// 数组表示二叉树-递归前序遍历
+console.log('数组表示二叉树-递归前序遍历:', testBinaryTree.pre_order())
+
+// 数组表示二叉树-递归中序遍历
+console.log('数组表示二叉树-递归中序遍历:', testBinaryTree.in_order())
+
+// 数组表示二叉树-递归后序遍历
+console.log('数组表示二叉树-递归后序遍历:', testBinaryTree.post_order())
+
