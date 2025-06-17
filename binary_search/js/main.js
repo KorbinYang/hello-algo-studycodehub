@@ -89,3 +89,31 @@ console.log(
     testResultInsertionIndex2
 )
 
+/**
+ * 二分查找插入点(存在重复元素
+ */
+function binary_search_insertion(nums, target) {
+    let i = 0
+    let j = nums.length - 1
+
+    while (i <= j) {
+        let m = Math.floor((i + j) / 2)
+
+        if (target > nums[m]) {
+            i = m + 1
+        } else if (target < nums[m]) {
+            j = m - 1
+        } else {
+            // 当 target 和 nums[m]相等时，继续缩小 j 的边界
+            j = m - 1
+        }
+    }
+
+    return i
+}
+
+const testNums = [1, 3, 6, 6, 6, 6, 6, 10, 12, 15]
+// 插入 6，数组中有5个重复元素。选择最左边target的index
+const testTargetIndex = binary_search_insertion(testNums, 6)
+console.log('二分查找插入点(存在重复元素)：', testTargetIndex)
+

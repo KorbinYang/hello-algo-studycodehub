@@ -67,3 +67,24 @@ testResultInsertionIndex2 = binary_search_insertion_simple(
     testInsertionArray, testInsertionTarget2
 )
 print("二分查找插入点索引为:", testResultInsertionIndex1, testResultInsertionIndex2)
+
+
+def binary_search_insertion(nums: list[int], target: int) -> int:
+    """二分查找插入点(存在重复元素)"""
+    i, j = 0, len(nums) - 1  # 初始化双闭区间
+    while i <= j:
+        m = (i + j) // 2  # 计算中点索引 m
+        if target > nums[m]:
+            i = m + 1  # target 在区间[m+1, j]中
+        elif target < nums[m]:
+            j = m - 1  # target 在区间[i, m-1]中
+        else:
+            j = m - 1
+    # 返回插入点
+    return i
+
+
+testNums = [1, 3, 6, 6, 6, 6, 6, 10, 12, 15]
+# 插入 6，数组中有5个重复元素。选择最左边target的index
+testTargetIndex = binary_search_insertion(testNums, 6)
+print("二分查找插入点(存在重复元素)：", testTargetIndex)
