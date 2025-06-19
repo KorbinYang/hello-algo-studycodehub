@@ -190,3 +190,62 @@ print("数组表示二叉树-递归中序遍历:", testBinaryTree.in_order())
 
 # 数组表示二叉树-递归后序遍历
 print("数组表示二叉树-递归后序遍历:", testBinaryTree.post_order())
+
+
+# 将二叉搜索树封装为一个类
+class BinarySearchTree:
+    def __init__(self):
+        # 初始化一棵二叉搜索树
+        treeNodes: list[TreeNode] = [0] * 15
+        for i in range(len(treeNodes)):
+            treeNodes[i] = TreeNode(i + 1)
+        # 暴力构建二叉搜索树
+        treeNodes[7].left = treeNodes[3]
+        treeNodes[3].left = treeNodes[1]
+        treeNodes[3].right = treeNodes[5]
+
+        treeNodes[1].left = treeNodes[0]
+        treeNodes[1].right = treeNodes[2]
+
+        treeNodes[5].left = treeNodes[4]
+        treeNodes[5].right = treeNodes[6]
+
+        treeNodes[7].right = treeNodes[11]
+        treeNodes[11].left = treeNodes[9]
+        treeNodes[11].right = treeNodes[13]
+
+        treeNodes[9].left = treeNodes[8]
+        treeNodes[9].right = treeNodes[10]
+
+        treeNodes[13].left = treeNodes[12]
+        treeNodes[13].right = treeNodes[14]
+
+        self._root = treeNodes[7]
+
+    # 二叉搜索树
+    def search(self, num) -> TreeNode | None:
+        """查找节点"""
+        cur: TreeNode = self._root
+
+        # 循环查找，越过节点后跳出
+        while cur is not None:
+            # 目标节点在 cur 的右子树中
+            if num > cur.val:
+                cur = cur.right
+            # 目标节点在 cur 的左子树中
+            elif num < cur.val:
+                cur = cur.left
+            # 找到目标节点，跳出循环
+            else:
+                break
+        return cur
+
+
+binarySearchTree = BinarySearchTree()
+targetTreeNode = binarySearchTree.search(6)
+print(
+    "二叉搜索树搜索目标节点",
+    targetTreeNode.val,
+    targetTreeNode.left.val,
+    targetTreeNode.right.val,
+)

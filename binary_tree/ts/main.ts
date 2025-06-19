@@ -207,3 +207,64 @@ console.log('数组表示二叉树-递归中序遍历:', testBinaryTree.in_order
 // 数组表示二叉树-递归后序遍历
 console.log('数组表示二叉树-递归后序遍历:', testBinaryTree.post_order())
 
+/**
+ * 将二叉搜索树封装为一个类
+ */
+class BinarySearchTree {
+    private _root: TreeNode | null
+    constructor() {
+        const treeNodes: Array<TreeNode> = new Array(15)
+        for (let i = 0; i < treeNodes.length; i++) {
+            treeNodes[i] = new TreeNode(i + 1)
+        }
+
+        // 暴力构建二叉搜索树
+        treeNodes[7].left = treeNodes[3]
+        treeNodes[3].left = treeNodes[1]
+        treeNodes[3].right = treeNodes[5]
+
+        treeNodes[1].left = treeNodes[0]
+        treeNodes[1].right = treeNodes[2]
+
+        treeNodes[5].left = treeNodes[4]
+        treeNodes[5].right = treeNodes[6]
+
+        treeNodes[7].right = treeNodes[11]
+        treeNodes[11].left = treeNodes[9]
+        treeNodes[11].right = treeNodes[13]
+
+        treeNodes[9].left = treeNodes[8]
+        treeNodes[9].right = treeNodes[10]
+
+        treeNodes[13].left = treeNodes[12]
+        treeNodes[13].right = treeNodes[14]
+
+        this._root = treeNodes[7]
+    }
+
+    search(num: number): TreeNode | null {
+        let cur = this._root
+
+        while (cur !== null) {
+            if (num > cur.val) {
+                cur = cur.right
+            } else if (num < cur.val) {
+                cur = cur.left
+            } else {
+                break
+            }
+        }
+
+        return cur
+    }
+}
+
+const binarySearchTree = new BinarySearchTree()
+const targetTreeNode = binarySearchTree.search(6)
+console.log(
+    '二叉搜索树搜索目标节点',
+    targetTreeNode?.val,
+    targetTreeNode?.left?.val,
+    targetTreeNode?.right?.val
+)
+
