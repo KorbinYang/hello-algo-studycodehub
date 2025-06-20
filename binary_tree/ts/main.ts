@@ -212,34 +212,11 @@ console.log('数组表示二叉树-递归后序遍历:', testBinaryTree.post_ord
  */
 class BinarySearchTree {
     private _root: TreeNode | null
-    constructor() {
-        const treeNodes: Array<TreeNode> = new Array(15)
-        for (let i = 0; i < treeNodes.length; i++) {
-            treeNodes[i] = new TreeNode(i + 1)
-        }
-
-        // 暴力构建二叉搜索树
-        treeNodes[7].left = treeNodes[3]
-        treeNodes[3].left = treeNodes[1]
-        treeNodes[3].right = treeNodes[5]
-
-        treeNodes[1].left = treeNodes[0]
-        treeNodes[1].right = treeNodes[2]
-
-        treeNodes[5].left = treeNodes[4]
-        treeNodes[5].right = treeNodes[6]
-
-        treeNodes[7].right = treeNodes[11]
-        treeNodes[11].left = treeNodes[9]
-        treeNodes[11].right = treeNodes[13]
-
-        treeNodes[9].left = treeNodes[8]
-        treeNodes[9].right = treeNodes[10]
-
-        treeNodes[13].left = treeNodes[12]
-        treeNodes[13].right = treeNodes[14]
-
-        this._root = treeNodes[7]
+    constructor(rootNum: number) {
+        // 初始化二叉搜索树根节点为 null
+        this._root = null
+        // 插入根节点
+        this.insert(rootNum)
     }
 
     search(num: number): TreeNode | null {
@@ -257,9 +234,59 @@ class BinarySearchTree {
 
         return cur
     }
+
+    insert(num: number) {
+        if (this._root === null) {
+            this._root = new TreeNode(num)
+            return
+        }
+
+        let cur: TreeNode | null = this._root
+        let pre: TreeNode | null = null
+        // 循环查找，越过叶节点跳出
+        while (cur !== null) {
+            if (cur.val === num) {
+                return
+            }
+
+            // 保存当前节点
+            pre = cur
+
+            if (num > cur.val) {
+                cur = cur.right
+            } else {
+                cur = cur.left
+            }
+        }
+
+        const node = new TreeNode(num)
+        if (num > pre!.val) {
+            pre!.right = node
+        } else {
+            pre!.left = node
+        }
+    }
 }
 
-const binarySearchTree = new BinarySearchTree()
+const binarySearchTree = new BinarySearchTree(8)
+
+// 二叉搜索树插入其他节点
+const levelOneNums = [4, 12]
+const levelTwoNums = [2, 6, 10, 14]
+const levelThreeNums = [1, 3, 5, 7, 9, 11, 13, 15]
+// 插入第一层节点
+levelOneNums.forEach((num) => {
+    binarySearchTree.insert(num)
+})
+// 插入第二层节点
+levelTwoNums.forEach((num) => {
+    binarySearchTree.insert(num)
+})
+// 插入第三层节点
+levelThreeNums.forEach((num) => {
+    binarySearchTree.insert(num)
+})
+
 const targetTreeNode = binarySearchTree.search(6)
 console.log(
     '二叉搜索树搜索目标节点',

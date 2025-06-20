@@ -194,33 +194,11 @@ print("数组表示二叉树-递归后序遍历:", testBinaryTree.post_order())
 
 # 将二叉搜索树封装为一个类
 class BinarySearchTree:
-    def __init__(self):
-        # 初始化一棵二叉搜索树
-        treeNodes: list[TreeNode] = [0] * 15
-        for i in range(len(treeNodes)):
-            treeNodes[i] = TreeNode(i + 1)
-        # 暴力构建二叉搜索树
-        treeNodes[7].left = treeNodes[3]
-        treeNodes[3].left = treeNodes[1]
-        treeNodes[3].right = treeNodes[5]
-
-        treeNodes[1].left = treeNodes[0]
-        treeNodes[1].right = treeNodes[2]
-
-        treeNodes[5].left = treeNodes[4]
-        treeNodes[5].right = treeNodes[6]
-
-        treeNodes[7].right = treeNodes[11]
-        treeNodes[11].left = treeNodes[9]
-        treeNodes[11].right = treeNodes[13]
-
-        treeNodes[9].left = treeNodes[8]
-        treeNodes[9].right = treeNodes[10]
-
-        treeNodes[13].left = treeNodes[12]
-        treeNodes[13].right = treeNodes[14]
-
-        self._root = treeNodes[7]
+    def __init__(self, rootNum: int):
+        # 初始化二叉搜索树根节点为 None
+        self._root = None
+        # 插入二叉搜索树根节点
+        self.insert(rootNum)
 
     # 二叉搜索树
     def search(self, num) -> TreeNode | None:
@@ -240,8 +218,53 @@ class BinarySearchTree:
                 break
         return cur
 
+    def insert(self, num: int):
+        """插入节点"""
+        # 若树为空，则初始化根节点
+        if self._root is None:
+            self._root = TreeNode(num)
+            return
+        # 循环查找，越过叶节点后跳出
+        cur, pre = self._root, None
+        while cur is not None:
+            # 找到重复节点，直接返回
+            if cur.val == num:
+                return
 
-binarySearchTree = BinarySearchTree()
+            pre = cur
+
+            # 插入位置在 cur 的右子树中
+            if num > cur.val:
+                cur = cur.right
+            # 插入位置在 cur 的左子树中
+            else:
+                cur = cur.left
+
+        # 插入节点
+        node = TreeNode(num)
+        if num > pre.val:
+            pre.right = node
+        else:
+            pre.left = node
+
+
+binarySearchTree = BinarySearchTree(8)  # 初始化二叉搜索树根节点，值为8
+# 二叉搜索树插入其他节点
+levelOneNums = [4, 12]
+levelTwoNums = [2, 6, 10, 14]
+levelThreeNums = [1, 3, 5, 7, 9, 11, 13, 15]
+
+# 插入第一层节点
+for i in range(len(levelOneNums)):
+    binarySearchTree.insert(levelOneNums[i])
+# 插入第二层节点
+for i in range(len(levelTwoNums)):
+    binarySearchTree.insert(levelTwoNums[i])
+# 插入第三层节点
+for i in range(len(levelThreeNums)):
+    binarySearchTree.insert(levelThreeNums[i])
+
+
 targetTreeNode = binarySearchTree.search(6)
 print(
     "二叉搜索树搜索目标节点",
