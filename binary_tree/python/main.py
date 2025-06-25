@@ -201,7 +201,7 @@ class BinarySearchTree:
         self.insert(rootNum)
 
     # 二叉搜索树
-    def search(self, num) -> TreeNode | None:
+    def search(self, num: int) -> TreeNode | None:
         """查找节点"""
         cur: TreeNode = self._root
 
@@ -247,6 +247,52 @@ class BinarySearchTree:
         else:
             pre.left = node
 
+    def remove(self, num: int):
+        """删除节点"""
+        # 若树为空，则直接返回
+        if self._root is None:
+            return
+        # 循环查找，越过叶节点后跳出
+        cur, pre = self._root, None
+        while cur is not None:
+            # 找到待删除节点，跳出循环
+            if cur.val == num:
+                break
+            pre = cur
+            # 待删除节点在 cur 的右子树中
+            if num > cur.val:
+                cur = cur.right
+            # 待删除节点在 cur 的左子树中
+            else:
+                cur = cur.left
+        # 若无待删除节点，则直接返回
+        if cur is None:
+            return
+
+        # 子节点数量 = 0 or 1
+        if cur.left is None or cur.right is None:
+            # 当子节点数量 = 0 、1时，child = null、该子节点
+            child = cur.left or cur.right
+            # 删除节点 cur
+            if cur != self._root:
+                if pre.left == cur:
+                    pre.left = child
+                else:
+                    pre.right = child
+            else:
+                # 若删除节点为根节点，则重新指定根节点
+                self._root = child
+        # 子节点数量 = 2
+        else:
+            # 获取中序遍历中 cur 的下一个节点
+            tmp: TreeNode = cur.right
+            while tmp.left is not None:
+                tmp = tmp.left
+                # 递归删除节点 tmp
+                self.remove(tmp.val)
+                # 用 tmp 覆盖 cur
+                cur.val = tmp.val
+
 
 binarySearchTree = BinarySearchTree(8)  # 初始化二叉搜索树根节点，值为8
 # 二叉搜索树插入其他节点
@@ -272,3 +318,29 @@ print(
     targetTreeNode.left.val,
     targetTreeNode.right.val,
 )
+
+# 二叉搜索树删除节点测试
+# 删除没有子节点的节点（叶子节点）
+binarySearchTree.remove(3)
+removeNodeParent = binarySearchTree.search(2)
+print("删除节点的父节点：", removeNodeParent.left.val, removeNodeParent.right)
+
+# 删除只有一个子节点的节点
+binarySearchTree.remove(2)
+removeNodeParent1 = binarySearchTree.search(1)
+print(
+    "删除节点信息：",
+    removeNodeParent1.left,
+    removeNodeParent1.right,
+    binarySearchTree.search(4).left.val,
+)
+
+# 二叉搜索树删除有两个节点的节点
+binarySearchTree.remove(4)
+removeNodeParent2 = binarySearchTree.search(8)
+print("删除节点的父节点：", removeNodeParent2.left.val)
+
+# 删除根节点
+binarySearchTree.remove(8)
+afterRemoveRootNode = binarySearchTree.search(9)
+print("根节点的左节点", afterRemoveRootNode.left.val)

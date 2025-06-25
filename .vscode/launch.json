@@ -7,7 +7,7 @@
       "name": "Debug with ts-node",
       "runtimeExecutable": "ts-node",
       "args": [
-        "${workspaceFolder}/linkedList/ts/main.ts"
+        "${workspaceFolder}/binary_tree/ts/main.ts"
       ],
       "skipFiles": [
         "<node_internals>/**"

@@ -266,6 +266,68 @@ class BinarySearchTree {
             pre!.left = node
         }
     }
+
+    remove(num: number) {
+        // 如果二叉搜索树根节点为空，则直接返回
+        if (this._root === null) {
+            return
+        }
+        let cur: TreeNode | null = this._root
+        let pre: TreeNode | null = null
+        // 循环遍历二叉搜索树，cur 越过叶子节点跳出
+        while (cur !== null) {
+            // 找到目标节点，跳出循环
+            if (cur.val === num) {
+                break
+            }
+            // 否则，向下继续遍历
+            pre = cur
+            // 如果目标节点在 cur 的右子树中
+            if (num > cur.val) {
+                cur = cur.right
+            } else {
+                // 目标节点在cur的左子树
+                cur = cur.left
+            }
+        }
+
+        // cur 为 null时，while 循环终止，此时二叉树中没有目标节点，直接返回
+        if (cur === null) {
+            return
+        }
+
+        // while 循环找到待删除目标节点，强制跳出循环，此时分两种情况
+        // 目标节点有 0 或 1 个子节点
+        if (cur.left === null || cur.right === null) {
+            // 此时目标节点的子节点为
+            const child = cur.left || cur.right
+            // 删除目标节点
+            // 删除目标节点分两种情况，根节点直接替换，其他节点用父节点来连接
+            if (cur !== this._root) {
+                // 判断目标节点在父节点的哪一边
+                // 在左边
+                if (cur === pre?.left) {
+                    pre.left = child
+                } else {
+                    // 在右边
+                    pre!.right = child
+                }
+            } else {
+                // 目标节点为根节点直接替换为 child
+                this._root = child
+            }
+        } else {
+            // 目标节点有两个子节点
+            // 找到 cur 中序遍历的下一个节点
+            let tmp: TreeNode = cur.right
+            // 如果cur 中序遍历的下一个节点的左节点存在，递归删除tmp
+            while (tmp.left !== null) {
+                tmp = tmp.left
+                this.remove(tmp.val)
+                cur.val = tmp.val
+            }
+        }
+    }
 }
 
 const binarySearchTree = new BinarySearchTree(8)
@@ -294,4 +356,34 @@ console.log(
     targetTreeNode?.left?.val,
     targetTreeNode?.right?.val
 )
+
+// 二叉搜索树删除节点测试
+// 删除没有子节点的节点（叶子节点）
+binarySearchTree.remove(3)
+const removeNodeParent = binarySearchTree.search(2)
+console.log(
+    '删除节点的父节点：',
+    removeNodeParent?.left?.val,
+    removeNodeParent?.right
+)
+
+// 删除只有一个子节点的节点
+binarySearchTree.remove(2)
+const removeNodeParent1 = binarySearchTree.search(1)
+console.log(
+    '删除节点信息：',
+    removeNodeParent1?.left,
+    removeNodeParent1?.right,
+    binarySearchTree.search(4)?.left?.val
+)
+
+// 二叉搜索树删除有两个节点的节点
+binarySearchTree.remove(4)
+const removeNodeParent2 = binarySearchTree.search(8)
+console.log('删除节点的父节点：', removeNodeParent2?.left?.val)
+
+// 删除根节点
+binarySearchTree.remove(8)
+const afterRemoveRootNode = binarySearchTree.search(9)
+console.log('根节点的左节点', afterRemoveRootNode?.left?.val)
 
